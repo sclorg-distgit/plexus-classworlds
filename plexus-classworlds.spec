@@ -4,7 +4,7 @@
 
 Name:           %{?scl_prefix}%{pkg_name}
 Version:        2.4.2
-Release:        8.11%{?dist}
+Release:        8.12%{?dist}
 Summary:        Plexus Classworlds Classloader Framework
 License:        ASL 2.0 and Plexus
 URL:            http://plexus.codehaus.org/
@@ -14,8 +14,8 @@ Source0:        https://github.com/sonatype/%{pkg_name}/archive/%{pkg_name}-%{ve
 Source1:        http://www.apache.org/licenses/LICENSE-2.0.txt
 
 BuildRequires:  %{?scl_prefix_java_common}maven-local
-BuildRequires:  maven30-plexus-pom
-BuildRequires:  maven30-maven-dependency-plugin
+BuildRequires:  %{?scl_prefix}plexus-pom
+BuildRequires:  %{?scl_prefix}maven-dependency-plugin
 
 
 %description
@@ -36,7 +36,7 @@ API documentation for %{pkg_name}.
 
 %prep
 %setup -q -n %{pkg_name}-%{pkg_name}-%{version}
-%{?scl:scl enable maven30 %{scl} - <<"EOF"}
+%{?scl:scl enable %{scl} - <<"EOF"}
 set -e -x
 %mvn_file  : plexus/classworlds
 %mvn_alias : classworlds:classworlds
@@ -67,13 +67,13 @@ cp %{SOURCE1} .
 %{?scl:EOF}
 
 %build
-%{?scl:scl enable maven30 %{scl} - <<"EOF"}
+%{?scl:scl enable %{scl} - <<"EOF"}
 set -e -x
 %mvn_build
 %{?scl:EOF}
 
 %install
-%{?scl:scl enable maven30 %{scl} - <<"EOF"}
+%{?scl:scl enable %{scl} - <<"EOF"}
 set -e -x
 %mvn_install
 %{?scl:EOF}
@@ -87,6 +87,9 @@ set -e -x
 %doc LICENSE.txt LICENSE-2.0.txt
 
 %changelog
+* Mon Jan 11 2016 Michal Srb <msrb@redhat.com> - 2.4.2-8.12
+- maven33 rebuild #2
+
 * Sat Jan 09 2016 Michal Srb <msrb@redhat.com> - 2.4.2-8.11
 - maven33 rebuild
 
