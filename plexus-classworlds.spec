@@ -3,20 +3,17 @@
 %{?maven_find_provides_and_requires}
 
 Name:           %{?scl_prefix}%{pkg_name}
-Version:        2.4.2
-Release:        8.12%{?dist}
+Version:        2.5.2
+Release:        3.1%{?dist}
 Summary:        Plexus Classworlds Classloader Framework
 License:        ASL 2.0 and Plexus
-URL:            http://plexus.codehaus.org/
+URL:            https://github.com/codehaus-plexus/plexus-classworlds
+Source0:        https://github.com/sonatype/%{pkg_name}/archive/%{pkg_name}-%{version}.tar.gz
 BuildArch:      noarch
 
-Source0:        https://github.com/sonatype/%{pkg_name}/archive/%{pkg_name}-%{version}.tar.gz
-Source1:        http://www.apache.org/licenses/LICENSE-2.0.txt
-
 BuildRequires:  %{?scl_prefix_java_common}maven-local
-BuildRequires:  %{?scl_prefix}plexus-pom
-BuildRequires:  %{?scl_prefix}maven-dependency-plugin
-
+BuildRequires:  %{?scl_prefix}mvn(org.apache.felix:maven-bundle-plugin)
+BuildRequires:  %{?scl_prefix}mvn(org.apache.maven.plugins:maven-dependency-plugin)
 
 %description
 Classworlds is a framework for container developers
@@ -38,32 +35,8 @@ API documentation for %{pkg_name}.
 %setup -q -n %{pkg_name}-%{pkg_name}-%{version}
 %{?scl:scl enable %{scl} - <<"EOF"}
 set -e -x
-%mvn_file  : plexus/classworlds
+%mvn_file : %{name} plexus/classworlds
 %mvn_alias : classworlds:classworlds
-
-for j in $(find . -name "*.jar" | grep -v /test-data/ | grep -v /test-jars/); do
-  rm $j
-done
-
-# fix ant groupId
-sed -i 's:<groupId>ant</groupId>:<groupId>org.apache.ant</groupId>:' pom.xml
-
-# Generate OSGI info
-%pom_xpath_inject "pom:project" "<packaging>bundle</packaging>"
-%pom_xpath_inject "pom:build/pom:plugins" "
-        <plugin>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>maven-bundle-plugin</artifactId>
-          <extensions>true</extensions>
-          <configuration>
-            <instructions>
-              <_nouses>true</_nouses>
-              <Export-Package>org.codehaus.classworlds.*;org.codehaus.plexus.classworlds.*</Export-Package>
-            </instructions>
-          </configuration>
-        </plugin>"
-
-cp %{SOURCE1} .
 %{?scl:EOF}
 
 %build
@@ -87,6 +60,18 @@ set -e -x
 %doc LICENSE.txt LICENSE-2.0.txt
 
 %changelog
+* Thu Jan 14 2016 Michal Srb <msrb@redhat.com> - 2.5.2-3.1
+- Prepare spec for SCL build
+
+* Thu Jan 14 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.5.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
+* Thu Jan 14 2016 Mikolaj Izdebski <mizdebsk@redhat.com> - 2.5.2-2
+- Update upstream URL
+
+* Thu Jan 14 2016 Mikolaj Izdebski <mizdebsk@redhat.com> - 2.5.2-1
+- Update to upstream version 2.5.2
+
 * Mon Jan 11 2016 Michal Srb <msrb@redhat.com> - 2.4.2-8.12
 - maven33 rebuild #2
 
