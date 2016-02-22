@@ -4,7 +4,7 @@
 
 Name:           %{?scl_prefix}%{pkg_name}
 Version:        2.5.2
-Release:        3.3%{?dist}
+Release:        3.4%{?dist}
 Summary:        Plexus Classworlds Classloader Framework
 License:        ASL 2.0 and Plexus
 URL:            https://github.com/codehaus-plexus/plexus-classworlds
@@ -49,22 +49,20 @@ set -e -x
 %{?scl:scl enable %{scl} - <<"EOF"}
 set -e -x
 %mvn_install
-# XXX - rebuild XMvn and remove
-pushd %{buildroot}%{_javadir}
-ln -s %{_javadir}/plexus/classworlds.jar %{name}.jar
-popd
 %{?scl:EOF}
 
 %files -f .mfiles
 %dir %{_javadir}/plexus
 %dir %{_mavenpomdir}/plexus
-%{_javadir}/%{name}.jar
 %doc LICENSE.txt LICENSE-2.0.txt
 
 %files javadoc -f .mfiles-javadoc
 %doc LICENSE.txt LICENSE-2.0.txt
 
 %changelog
+* Tue Jan 19 2016 Michal Srb <msrb@redhat.com> - 2.5.2-3.4
+- Remove auxiliary symlink for XMvn
+
 * Tue Jan 19 2016 Michal Srb <msrb@redhat.com> - 2.5.2-3.3
 - Add auxiliary symlink for XMvn
 
