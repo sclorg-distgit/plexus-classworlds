@@ -4,14 +4,14 @@
 
 Name:           %{?scl_prefix}%{pkg_name}
 Version:        2.5.2
-Release:        3.4%{?dist}
+Release:        3.5%{?dist}
 Summary:        Plexus Classworlds Classloader Framework
 License:        ASL 2.0 and Plexus
 URL:            https://github.com/codehaus-plexus/plexus-classworlds
 Source0:        https://github.com/sonatype/%{pkg_name}/archive/%{pkg_name}-%{version}.tar.gz
 BuildArch:      noarch
 
-BuildRequires:  %{?scl_prefix_java_common}maven-local
+BuildRequires:  %{?scl_prefix}maven-local
 BuildRequires:  %{?scl_prefix}mvn(org.apache.felix:maven-bundle-plugin)
 BuildRequires:  %{?scl_prefix}mvn(org.apache.maven.plugins:maven-dependency-plugin)
 
@@ -60,6 +60,9 @@ set -e -x
 %doc LICENSE.txt LICENSE-2.0.txt
 
 %changelog
+* Mon Feb 08 2016 Michal Srb <msrb@redhat.com> - 2.5.2-3.5
+- Fix BR on maven-local & co.
+
 * Tue Jan 19 2016 Michal Srb <msrb@redhat.com> - 2.5.2-3.4
 - Remove auxiliary symlink for XMvn
 
